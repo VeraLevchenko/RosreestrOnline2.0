@@ -1,5 +1,3 @@
-import requests
-import json
 import rosreestr_online
 
 if __name__ == '__main__':
@@ -13,9 +11,17 @@ if __name__ == '__main__':
 
     type_street = 'улица'
     street = 'Франкфурта'
-    house = '9А'
-    building = 'None'
-    apartment = 'None'
-    cadNumbers = rosreestr_online.getCadNumByAdress(type_street, street, house, building, apartment)
-    # for data in datas:
-    #     print(json.dumps(data, ensure_ascii=False, indent=2))
+    house = '9-А'
+    building = ''
+    apartment = ''
+    cadNumbers = rosreestr_online.getByAdressCadNumbers(type_street, street, house, building, apartment)
+    # print("C данным адресом найдены объекты с кадастровыми номерами: ", cadNumbers)
+    for cadNumber in cadNumbers:
+        objectIds = rosreestr_online.getObjectId(cadNumber)
+        print("cadNumber = ", cadNumber)
+        print("objectIds", objectIds)
+        for objectId in objectIds:
+            print("objectId", objectId)
+            objectType = rosreestr_online.getObjectType(objectId)
+            # print(objectType)
+
