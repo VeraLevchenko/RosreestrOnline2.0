@@ -6,72 +6,60 @@ headers = {
     'Content-Type': 'application/json',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'}
 
-api_adres = 'https://rosreestr.gov.ru/api/online/address/fir_objects?macroRegionId=132000000000&regionId=132431000000'
-api_cadnum = 'https://rosreestr.gov.ru/api/online/fir_objects/'
-api_objectId = 'https://rosreestr.gov.ru/api/online/fir_object/'
-
 
 def getObjectType(objectId):
-    url = f'https://rosreestr.gov.ru/api/online/fir_object/{objectId}'
+            # официальный API Росреестра (неполные сведения)
+    # url = f'https://rosreestr.gov.ru/api/online/fir_object/{objectId}'
+            # НЕофициальный API Росреестра (более полные сведения и даты новее)
+    url = f'http://rosreestr.ru/fir_lite_rest/api/gkn/fir_object/{objectId}'
     try:
         r = requests.get(url, headers=headers, verify="CertBundle.pem")
-        # objectTypes = []
-        print("Результат по запросу id", r.json())
-        # for el in r.json():
-        #     print(el)
-        #     objectType = el.get("objectId")
-        #     objectTypes.append(objectType)
-        #     # if "_" in objectIds:
-        #     #     objectId = objectIds
-        #     # else:
-        #     #     objectId = "objectId отсутстует"
-        objectTypes = "dsv"
-        return objectTypes
+        objectData = r.json().get("objectData")
+        objectType = objectData.get("objectType")
     except:
-        print('Error!!! Нет объекта с таким Id')
-    # return objectTypes
-
+        # print('Error!!! Нет объекта с таким Id')
+        r = 'Error!!! Нет объекта с таким Id'
+    return objectData, objectType
 def getObjectId(cadNum):
+    # официальный API Росреестра для поиска ID
     url = f'https://rosreestr.gov.ru/api/online/fir_objects/{cadNum}'
+    # НЕофициальный API Росреестра для поиска ID
+    url2 = f'http://rosreestr.ru/fir_lite_rest/api/gkn/fir_objects/{cadNum}'
     try:
         r = requests.get(url, headers=headers, verify="CertBundle.pem")
+        r2 = requests.get(url2, headers=headers, verify="CertBundle.pem")
         objectIds = []
+        objectIds2 = []
         for el in r.json():
             objectId = el.get("objectId")
             objectIds.append(objectId)
-            # if "_" in objectIds:
-            #     objectId = objectIds
-            # else:
-            #     objectId = "objectId отсутстует"
-        return objectIds
+
+        for el2 in r2.json():
+            objectId2 = el2.get("objectId")
+            objectIds2.append(objectId2)
     except:
         print('Error!!! Нет объекта с таким кадастровым номером')
-    return objectId
-	# for i in el:
-	# 	objectIds = el.get("objectId")
-	# 	if "_" in objectIds:
-	# 		objectId = objectIds
-	# 	else:
-	# 		objectId = "objectId отсутстует"
-    objectId = "5"
-    return objectId
-def normalizationTypeStreet(type_street):
-	type_ulicas = ["ул", "улица", "у", ]
-	type_proezd = ["проезд", "пр-д", "пр"]
-	type_pereulok = ["пер", "пер-к", "переулок"]
-	type_prospect = ["пр-т", "п-кт", "проспект", "пр-кт"]
+    # print("objectId официальные", objectIds)
+    # print("objectId2 неофициальный", objectIds2)
+    return objectIds, objectIds2
 
-	type_street = type_street.replace(".", '')
-	type_street = type_street.lower()
-	if type_street in type_ulicas:
-		type_street = "улица"
-	if type_street in type_proezd:
-		type_street = "проезд"
-	if type_street in type_pereulok:
-		type_street = "переулок"
-	if type_street in type_prospect:
-		type_street = "проспект"
-	return type_street
+def normalizationTypeStreet(type_street):
+    type_ulicas = ["ул", "улица", "у", ]
+    type_proezd = ["проезд", "пр-д", "пр"]
+    type_pereulok = ["пер", "пер-к", "переулок"]
+    type_prospect = ["пр-т", "п-кт", "проспект", "пр-кт"]
+
+    type_street = type_street.replace(".", '')
+    type_street = type_street.lower()
+    if type_street in type_ulicas:
+        type_street = "улица"
+    if type_street in type_proezd:
+        type_street = "проезд"
+    if type_street in type_pereulok:
+        type_street = "переулок"
+    if type_street in type_prospect:
+        type_street = "проспект"
+    return type_street
 
 
 def checkTypeStreet(objects, type_street):
@@ -109,7 +97,6 @@ def getUrls(street, house, building, apartment):
             else:
                 new_house = new_house + "-" + el
                 k = 1
-        print(new_house)
         houses.append(new_house)
     for house in houses:
         url = getUrl(street, house, building, apartment)
