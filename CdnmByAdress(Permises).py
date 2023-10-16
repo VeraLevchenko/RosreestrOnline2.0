@@ -1,7 +1,11 @@
 import rosreestr_online
 import pandas as pd
+import time
 
-if __name__ == '__main__':
+def getNumberMassiv(filename):
+    start_time = time.time()  # время начала выполнения
+
+
 #----------------------официальные API______________________________________________
     # url = 'https://rosreestr.gov.ru/api/online/fir_objects/42:30:0302016:242'
     # url = 'https://rosreestr.gov.ru/api/online/fir_object/142_469806'
@@ -22,8 +26,7 @@ if __name__ == '__main__':
     # 002001010000 / Иной объект недвижимости
 
     rezult = []
-    filename = 'D:/No_cn_in_gar/результат простановки кадастровых/1001-3000.xlsx'
-    df = pd.read_excel(filename, index_col=0, sheet_name='Sheet1')
+    df = pd.read_excel(filename, index_col=0, sheet_name='Лист1')
              # Сброс ограничений на количество выводимых рядов
     # pd.set_option('display.max_rows', 10)
             # отключаем перенос табл на другую строку
@@ -35,7 +38,6 @@ if __name__ == '__main__':
 
     print(df.head(10))
     # len(df.index)
-
 
     for i in range(0, len(df.index)):
         print(f"{i}из{len(df.index)}")
@@ -63,7 +65,16 @@ if __name__ == '__main__':
         print(rez)
         rezult.append(rez)
     df.insert(loc=len(df.columns), column='CadNumbers', value=rezult)
-    df.to_excel(r'D:/No_cn_in_gar/результат простановки кадастровых/1001-3000.xlsx', index=False)
+    df.to_excel(filename, index=False)
 
 
+    end_time = time.time()  # время окончания выполнения
+    execution_time = end_time - start_time  # вычисляем время выполнения
+    print(f"Время выполнения программы: {execution_time} секунд")
 
+
+if __name__ == '__main__':
+    for i in range(13, 276):
+        filename = f'D:/No_cn_in_gar/результат простановки кадастровых/Massiv/{i}.xlsx'
+        print(filename)
+        getNumberMassiv(filename)
