@@ -22,7 +22,7 @@ if __name__ == '__main__':
     # 002001010000 / Иной объект недвижимости
 
     rezult = []
-    filename = 'D:/No_cn_in_gar/результат простановки кадастровых/1-1000.xlsx'
+    filename = 'D:/No_cn_in_gar/результат простановки кадастровых/1001-3000.xlsx'
     df = pd.read_excel(filename, index_col=0, sheet_name='Sheet1')
              # Сброс ограничений на количество выводимых рядов
     # pd.set_option('display.max_rows', 10)
@@ -49,18 +49,21 @@ if __name__ == '__main__':
         if len(cadNumbers) != 0:
             for cadNumber in cadNumbers:
                 objectIds, objectIds2 = rosreestr_online.getObjectId(cadNumber)
-                objectDаta, objectType = rosreestr_online.getObjectType(objectIds2[0])
-                # print(objectType)
-                if objectType == '002001003000':
-                    print("cadNumber = ", cadNumber)
-                    print(objectType)
-                    rez.append(cadNumber)
+                if len(objectIds2) > 0:
+                    objectDаta, objectType = rosreestr_online.getObjectType(objectIds2[0])
+                    # print(objectType)
+                    if objectType == '002001003000':
+                        print("cadNumber = ", cadNumber)
+                        print(objectType)
+                        rez.append(cadNumber)
+                else:
+                    rez.append(cadNumber + "ID не найдено!!!!!!!!!!!!!")
         else:
             rez.append("Объект с таким адресом отсутствует на ГКУ")
         print(rez)
         rezult.append(rez)
     df.insert(loc=len(df.columns), column='CadNumbers', value=rezult)
-    df.to_excel(r'D:/No_cn_in_gar/результат простановки кадастровых/1-1000.xlsx', index=False)
+    df.to_excel(r'D:/No_cn_in_gar/результат простановки кадастровых/1001-3000.xlsx', index=False)
 
 
 

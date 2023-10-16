@@ -86,20 +86,24 @@ def getUrls(street, house, building, apartment):
     houses = [house]
     urls = []
     # Генерация адреса с тире и без тире в номере здания
-    if "-" in house:
-        houses.append(str(house.replace("-", '')))
+    if str(house).isdigit():
+        pass
     else:
-        new_house = ''
-        k = 0
-        for el in house:
-            if el.isdigit() or k == 1:
-                new_house = new_house + el
-            else:
-                new_house = new_house + "-" + el
-                k = 1
-        houses.append(new_house)
+        if "-" in house:
+            houses.append(str(house.replace("-", '')))
+        else:
+            new_house = ''
+            k = 0
+            for el in house:
+                if el.isdigit() or k == 1:
+                    new_house = new_house + el
+                else:
+                    new_house = new_house + "-" + el
+                    k = 1
+            houses.append(new_house)
     for house in houses:
         url = getUrl(street, house, building, apartment)
+        print(url)
         urls.append(url)
     return urls
 
@@ -126,7 +130,6 @@ def getByAdressCadNumbers(type_street, street, house, building, apartment):
     urls = getUrls(street, house, building, apartment)
     cadNumbers = []
     for url in urls:
-        print(url)
         try:
             response = requests.get(url, headers=headers, verify="CertBundle.pem")
             for el in response.json():
