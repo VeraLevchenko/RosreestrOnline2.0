@@ -131,7 +131,7 @@ def getByAdressCadNumbers(type_street, street, house, building, apartment):
             response = requests.get(url, headers=headers, verify="CertBundle.pem")
             for el in response.json():
                 cadNum = el.get('objectCn')
-                if cadNum not in cadNumbers and cadNum != None:  # Исключаем дубли
+                if cadNum not in cadNumbers and cadNum != None  and len(cadNum) < 20:# Исключаем дубли и некорр кад ном
                     objects = getObjectByCadNum(cadNum)
                     if checkTypeStreet(objects, type_street): # Исключаем ошибку в типе улицы
                         cadNumbers.append(cadNum)
