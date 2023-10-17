@@ -41,20 +41,18 @@ def getNumberMassiv(filename):
 
     for i in range(0, len(df.index)):
         print(f"{i}из{len(df.index)}")
-        type_street = str(df.iloc[i]['street_abbr'])
-        street = str(df.iloc[i]['street_fullname'])
-        house = str(df.iloc[i]['house_fullname'])
-        building = ''
-        apartment = str(df.iloc[i]['appartment_number'])
-        cadNumbers = rosreestr_online.getByAdressCadNumbers(type_street, street, house, building, apartment)
+        cadNumber = str(df.iloc[i]['CadNumbers'])
+        objectIds, objectIds2 = rosreestr_online.getObjectId(cadNumber)
+        if len(objectIds2) > 0:
+            objectDаta, objectType = rosreestr_online.getObjectType(objectIds2[0])
+            
         rez = []
         if len(cadNumbers) != 0:
             for cadNumber in cadNumbers:
                 objectIds, objectIds2 = rosreestr_online.getObjectId(cadNumber)
-                if len(objectIds2) > 0:
-                    objectDаta, objectType = rosreestr_online.getObjectType(objectIds2[0])
+
                     # print(objectType)
-                    if objectType == '002001003000':
+                    if objectType == '002001002000' or objectType == '002001005000':
                         print("cadNumber = ", cadNumber)
                         print(objectType)
                         rez.append(cadNumber)

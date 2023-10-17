@@ -45,7 +45,7 @@ def getNumberMassiv(filename):
         street = str(df.iloc[i]['street_fullname'])
         house = str(df.iloc[i]['house_fullname'])
         building = ''
-        apartment = str(df.iloc[i]['appartment_number'])
+        apartment = ''
         cadNumbers = rosreestr_online.getByAdressCadNumbers(type_street, street, house, building, apartment)
         rez = []
         if len(cadNumbers) != 0:
@@ -54,7 +54,7 @@ def getNumberMassiv(filename):
                 if len(objectIds2) > 0:
                     objectDаta, objectType = rosreestr_online.getObjectType(objectIds2[0])
                     # print(objectType)
-                    if objectType == '002001003000':
+                    if objectType == '002001002000' or objectType == '002001005000':
                         print("cadNumber = ", cadNumber)
                         print(objectType)
                         rez.append(cadNumber)
@@ -74,7 +74,7 @@ def getNumberMassiv(filename):
 
 
 if __name__ == '__main__':
-    for i in range(231, 276):
-        filename = f'D:/No_cn_in_gar/результат простановки кадастровых/Massiv/{i}.xlsx'
+    for i in range(1, 276):
+        filename = f'D:/No_cn_in_gar/результат простановки кадастровых/ЧД/Massiv/{i}.xlsx'
         print(filename)
         getNumberMassiv(filename)

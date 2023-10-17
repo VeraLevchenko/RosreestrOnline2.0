@@ -48,6 +48,7 @@ def normalizationTypeStreet(type_street):
     type_proezd = ["проезд", "пр-д", "пр"]
     type_pereulok = ["пер", "пер-к", "переулок"]
     type_prospect = ["пр-т", "п-кт", "проспект", "пр-кт"]
+    type_shosse = ["шоссе", "ш", "ш.", "пр-кт"]
 
     type_street = type_street.replace(".", '')
     type_street = type_street.lower()
@@ -59,6 +60,8 @@ def normalizationTypeStreet(type_street):
         type_street = "переулок"
     if type_street in type_prospect:
         type_street = "проспект"
+    if type_street in type_shosse:
+        type_street = "шоссе"
     return type_street
 
 
