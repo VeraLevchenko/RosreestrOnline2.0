@@ -25,7 +25,6 @@ def getObjectId(cadNum):
     url = f'https://rosreestr.gov.ru/api/online/fir_objects/{cadNum}'
     # НЕофициальный API Росреестра для поиска ID
     url2 = f'http://rosreestr.ru/fir_lite_rest/api/gkn/fir_objects/{cadNum}'
-    print(url2)
     try:
         # r = requests.get(url, headers=headers, verify="CertBundle.pem")
         r2 = requests.get(url2, headers=headers, verify="CertBundle.pem")

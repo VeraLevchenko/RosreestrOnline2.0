@@ -50,19 +50,18 @@ def getNumberMassiv(filename):
         rez = []
         if len(cadNumbers) != 0:
             for cadNumber in cadNumbers:
-                objectIds, objectIds2 = rosreestr_online.getObjectId(cadNumber)
+                objectIds2 = rosreestr_online.getObjectId(cadNumber)
                 if len(objectIds2) > 0:
                     objectDаta, objectType = rosreestr_online.getObjectType(objectIds2[0])
-                    # print(objectType)
-                    if objectType == '002001002000' or objectType == '002001005000':
+                    removed = objectDаta.get("removed")
+                    if removed != 1 and (objectType == '002001002000' or objectType == '002001005000') :
                         print("cadNumber = ", cadNumber)
-                        print(objectType)
                         rez.append(cadNumber)
                 else:
                     rez.append(cadNumber + "ID не найдено!!!!!!!!!!!!!")
         else:
             rez.append("Объект с таким адресом отсутствует на ГКУ")
-        print(rez)
+        print("rez", rez)
         rezult.append(rez)
     df.insert(loc=len(df.columns), column='CadNumbers', value=rezult)
     df.to_excel(filename, index=False)
@@ -74,7 +73,7 @@ def getNumberMassiv(filename):
 
 
 if __name__ == '__main__':
-    for i in range(128, 230):
+    for i in range(130, 230):
         filename = f'D:/No_cn_in_gar/результат простановки кадастровых/ЧД/Massiv/{i}.xlsx'
         print(filename)
         getNumberMassiv(filename)
