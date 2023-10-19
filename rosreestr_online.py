@@ -25,14 +25,15 @@ def getObjectId(cadNum):
     url = f'https://rosreestr.gov.ru/api/online/fir_objects/{cadNum}'
     # НЕофициальный API Росреестра для поиска ID
     url2 = f'http://rosreestr.ru/fir_lite_rest/api/gkn/fir_objects/{cadNum}'
+    print(url2)
     try:
-        r = requests.get(url, headers=headers, verify="CertBundle.pem")
+        # r = requests.get(url, headers=headers, verify="CertBundle.pem")
         r2 = requests.get(url2, headers=headers, verify="CertBundle.pem")
-        objectIds = []
+        # objectIds = []
         objectIds2 = []
-        for el in r.json():
-            objectId = el.get("objectId")
-            objectIds.append(objectId)
+        # for el in r.json():
+        #     objectId = el.get("objectId")
+        #     objectIds.append(objectId)
 
         for el2 in r2.json():
             objectId2 = el2.get("objectId")
@@ -41,7 +42,7 @@ def getObjectId(cadNum):
         print('Error!!! Нет объекта с таким кадастровым номером')
     # print("objectId официальные", objectIds)
     # print("objectId2 неофициальный", objectIds2)
-    return objectIds, objectIds2
+    return objectIds2
 
 def normalizationTypeStreet(type_street):
     type_ulicas = ["ул", "улица", "у", ]

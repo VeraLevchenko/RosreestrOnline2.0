@@ -26,7 +26,7 @@ def getNumberMassiv(filename):
     # 002001010000 / Иной объект недвижимости
 
     rezult = []
-    df = pd.read_excel(filename, index_col=0, sheet_name='Лист1')
+    df = pd.read_excel(filename, index_col=0, sheet_name='Sheet1')
              # Сброс ограничений на количество выводимых рядов
     # pd.set_option('display.max_rows', 10)
             # отключаем перенос табл на другую строку
@@ -40,29 +40,27 @@ def getNumberMassiv(filename):
     # len(df.index)
 
     for i in range(0, len(df.index)):
+        rez = []
         print(f"{i}из{len(df.index)}")
         cadNumber = str(df.iloc[i]['CadNumbers'])
-        objectIds, objectIds2 = rosreestr_online.getObjectId(cadNumber)
-        if len(objectIds2) > 0:
-            objectDаta, objectType = rosreestr_online.getObjectType(objectIds2[0])
-            
-        rez = []
-        if len(cadNumbers) != 0:
-            for cadNumber in cadNumbers:
-                objectIds, objectIds2 = rosreestr_online.getObjectId(cadNumber)
-
-                    # print(objectType)
-                    if objectType == '002001002000' or objectType == '002001005000':
-                        print("cadNumber = ", cadNumber)
-                        print(objectType)
-                        rez.append(cadNumber)
-                else:
-                    rez.append(cadNumber + "ID не найдено!!!!!!!!!!!!!")
+        if len(cadNumber) <= 23:
+            print(cadNumber)
+            objectIds2 = rosreestr_online.getObjectId(cadNumber)
+            print("objectIds2", objectIds2)
+            if len(objectIds2) > 0:
+                objectDаta, objectType = rosreestr_online.getObjectType(objectIds2[0])
+                objectName = objectDаta.get("objectName")
+                removed = objectDаta.get("removed")
+                print("objectName:", objectName)
+                print("removed:", removed)
+                rez.append(objectName)
+                rez.append(removed)
+            else:
+                rez.append("Объект с таким адресом отсутствует на ГКУ")
         else:
-            rez.append("Объект с таким адресом отсутствует на ГКУ")
-        print(rez)
+            rez.append("Пропускаю")
         rezult.append(rez)
-    df.insert(loc=len(df.columns), column='CadNumbers', value=rezult)
+    df.insert(loc=len(df.columns), column='objectName', value=rezult)
     df.to_excel(filename, index=False)
 
 
@@ -72,7 +70,7 @@ def getNumberMassiv(filename):
 
 
 if __name__ == '__main__':
-    for i in range(231, 276):
-        filename = f'D:/No_cn_in_gar/результат простановки кадастровых/Massiv/{i}.xlsx'
+    for i in range(511, 512):
+        filename = f'D:/No_cn_in_gar/результат простановки кадастровых/Помещения/Massiv/{i}.xlsx'
         print(filename)
         getNumberMassiv(filename)

@@ -74,7 +74,7 @@ def getNumberMassiv(filename):
 
 
 if __name__ == '__main__':
-    for i in range(1, 276):
+    for i in range(128, 230):
         filename = f'D:/No_cn_in_gar/результат простановки кадастровых/ЧД/Massiv/{i}.xlsx'
         print(filename)
         getNumberMassiv(filename)
