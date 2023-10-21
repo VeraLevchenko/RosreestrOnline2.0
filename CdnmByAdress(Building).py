@@ -1,3 +1,7 @@
+# Программа берет данные из файла xlsx по адресу находит кадастровый номер здания (незвершенки), проверяет на снятие
+# с учета и выводит результат в тот же файл
+
+
 import rosreestr_online
 import pandas as pd
 import time
@@ -61,7 +65,6 @@ def getNumberMassiv(filename):
                     rez.append(cadNumber + "ID не найдено!!!!!!!!!!!!!")
         else:
             rez.append("Объект с таким адресом отсутствует на ГКУ")
-        print("rez", rez)
         rezult.append(rez)
     df.insert(loc=len(df.columns), column='CadNumbers', value=rezult)
     df.to_excel(filename, index=False)
@@ -73,7 +76,7 @@ def getNumberMassiv(filename):
 
 
 if __name__ == '__main__':
-    for i in range(130, 230):
+    for i in range(214, 230):
         filename = f'D:/No_cn_in_gar/результат простановки кадастровых/ЧД/Massiv/{i}.xlsx'
         print(filename)
         getNumberMassiv(filename)

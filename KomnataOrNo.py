@@ -1,3 +1,4 @@
+
 import rosreestr_online
 import pandas as pd
 import time
@@ -38,8 +39,8 @@ def getNumberMassiv(filename):
 
     print(df.head(10))
     # len(df.index)
-
-    for i in range(0, len(df.index)):
+    k = 2
+    for i in range(0, k):
         rez = []
         print(f"{i}из{len(df.index)}")
         cadNumber = str(df.iloc[i]['CadNumbers'])
@@ -60,8 +61,11 @@ def getNumberMassiv(filename):
         else:
             rez.append("Пропускаю")
         rezult.append(rez)
-    df.insert(loc=len(df.columns), column='objectName', value=rezult)
-    df.to_excel(filename, index=False)
+    blank = [i for i in range(1, 2)]
+    print(blank)
+    print(rezult)
+    # df.insert(loc=len(df.columns), column='objectName', value=rezult)
+    # df.to_excel(filename, index=False)
 
 
     end_time = time.time()  # время окончания выполнения
@@ -70,7 +74,7 @@ def getNumberMassiv(filename):
 
 
 if __name__ == '__main__':
-    for i in range(511, 512):
-        filename = f'D:/No_cn_in_gar/результат простановки кадастровых/Помещения/Massiv/{i}.xlsx'
-        print(filename)
-        getNumberMassiv(filename)
+    # for i in range(511, 512):
+    filename = f'D:/No_cn_in_gar/результат простановки кадастровых/Помещения/sales_combined.xlsx'
+    print(filename)
+    getNumberMassiv(filename)
