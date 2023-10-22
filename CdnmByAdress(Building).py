@@ -30,7 +30,7 @@ def getNumberMassiv(filename):
     # 002001010000 / Иной объект недвижимости
 
     rezult = []
-    df = pd.read_excel(filename, index_col=0, sheet_name='Лист1')
+    df = pd.read_excel(filename, index_col=0, sheet_name='Sheet1')
              # Сброс ограничений на количество выводимых рядов
     # pd.set_option('display.max_rows', 10)
             # отключаем перенос табл на другую строку
@@ -66,8 +66,8 @@ def getNumberMassiv(filename):
         else:
             rez.append("Объект с таким адресом отсутствует на ГКУ")
         rezult.append(rez)
-    df.insert(loc=len(df.columns), column='CadNumbers', value=rezult)
-    df.to_excel(filename, index=False)
+    df.insert(loc=len(df.columns), column='CadNumbers2', value=rezult)
+    df.to_excel(filename)
 
 
     end_time = time.time()  # время окончания выполнения
@@ -76,7 +76,7 @@ def getNumberMassiv(filename):
 
 
 if __name__ == '__main__':
-    for i in range(214, 230):
+    for i in range(129, 130):
         filename = f'D:/No_cn_in_gar/результат простановки кадастровых/ЧД/Massiv/{i}.xlsx'
         print(filename)
         getNumberMassiv(filename)
