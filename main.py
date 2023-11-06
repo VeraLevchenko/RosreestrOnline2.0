@@ -29,7 +29,8 @@ if __name__ == '__main__':
     rez = []
     if len(cadNumbers) != 0:
         for cadNumber in cadNumbers:
-            objectIds, objectIds2 = rosreestr_online.getObjectId(cadNumber)
+            # objectIds, objectIds2 = rosreestr_online.getObjectId(cadNumber)
+            objectIds2 = rosreestr_online.getObjectId(cadNumber)
             objectDаta, objectType = rosreestr_online.getObjectType(objectIds2[0])
             # print(objectType)
             if objectType == '002001003000':

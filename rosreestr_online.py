@@ -111,6 +111,23 @@ def getUrls(street, house, building, apartment):
     return urls
 
 
+# def getUrl(street, house, building, apartment):
+#     if building != '':
+#         if apartment != '':
+#             url = f'https://rosreestr.ru/fir_rest/api/fir/address/fir_objects?macroRegionId=132000000000&' \
+#                   f'regionId=132431000000&street={street}&house={house}&building={building}&apartment={apartment}'
+#         else:
+#             url = f'https://rosreestr.ru/fir_rest/api/fir/address/fir_objects?macroRegionId=132000000000&' \
+#                   f'regionId=132431000000&street={street}&house={house}&building={building}'
+#     else:
+#         if apartment != '':
+#             url = f'https://rosreestr.ru/fir_rest/api/fir/address/fir_objects?macroRegionId=132000000000&' \
+#                   f'regionId=132431000000&street={street}&house={house}&apartment={apartment}'
+#         else:
+#             url = f'https://rosreestr.ru/fir_rest/api/fir/address/fir_objects?macroRegionId=132000000000&' \
+#                   f'regionId=132431000000&street={street}&house={house}'
+#     return url
+
 def getUrl(street, house, building, apartment):
     if building != '':
         if apartment != '':
@@ -127,7 +144,6 @@ def getUrl(street, house, building, apartment):
             url = f'https://rosreestr.gov.ru/api/online/address/fir_objects?macroRegionId=132000000000&' \
                   f'regionId=132431000000&street={street}&house={house}'
     return url
-
 
 def getByAdressCadNumbers(type_street, street, house, building, apartment):
     urls = getUrls(street, house, building, apartment)
