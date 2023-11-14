@@ -29,7 +29,7 @@ def getNumberMassiv(filename):
     # 002001010000 / Иной объект недвижимости
 
     rezult = []
-    df = pd.read_excel(filename, index_col=0)
+    df = pd.read_excel(filename, index_col=0, sheet_name="Лист1")
              # Сброс ограничений на количество выводимых рядов
     # pd.set_option('display.max_rows', 10)
             # отключаем перенос табл на другую строку
@@ -44,29 +44,35 @@ def getNumberMassiv(filename):
 
     for i in range(0, len(df.index)):
         print(f"{i}из{len(df.index)}")
-        type_street = str(df.iloc[i]['type_street'])
-        street = str(df.iloc[i]['street'])
-        house = str(df.iloc[i]['house'])
-        building = ''
-        apartment = ''
-        cadNumbers = rosreestr_online.getByAdressCadNumbers(type_street, street, house, building, apartment)
+        cadNumber = str(df.iloc[i]['Кадастровый номер'])
         rez = []
-        if len(cadNumbers) != 0:
-            for cadNumber in cadNumbers:
-                objectIds2 = rosreestr_online.getObjectId(cadNumber)
-                if len(objectIds2) > 0:
-                    objectDаta, objectType = rosreestr_online.getObjectType(objectIds2[0])
-                    removed = objectDаta.get("removed")
-                    if removed != 1 and (objectType == '002001001000'):
-                        print("cadNumber = ", cadNumber)
-                        rez.append(cadNumber)
-                else:
-                    rez.append(cadNumber + "ID не найдено!!!!!!!!!!!!!")
+        if len(cadNumber) != 0:
+
+            print(cadNumber)
+            objectIds1, objectIds2 = rosreestr_online.getObjectId(cadNumber)
+            objectIds = objectIds1 + objectIds2
+            print(objectIds)
+                # удаление дубликатов из списка
+            li = []
+            [li.append(x) for x in objectIds if x not in li]
+
+            # вывод списка после удаления элементов
+            print(li)
+            if len(li) > 0:
+                objectDаtas, objectType = rosreestr_online.getObjectType(li[0])
+                print(objectDаtas)
+                removed = objectDаtas.get("objectData").get("removed")
+                rightsReg = objectDаtas.get("parcelData").get("rightsReg")
+                print(removed)
+                print(rightsReg)
+                rez.append(cadNumber)
+            else:
+                rez.append(cadNumber + "ID не найдено!!!!!!!!!!!!!")
         else:
             rez.append("Объект с таким адресом отсутствует на ГКУ")
-        rezult.append(rez)
-    df.insert(loc=len(df.columns), column='CadNumbers5', value=rezult)
-    df.to_excel(filename)
+    rezult.append(rez)
+    # df.insert(loc=len(df.columns), column='CadNumbers5', value=rezult)
+    # df.to_excel(filename)
 
 
     end_time = time.time()  # время окончания выполнения
@@ -76,6 +82,6 @@ def getNumberMassiv(filename):
 
 if __name__ == '__main__':
     for i in range(129, 130):
-        filename = f'C:/Левченко/Новая папка/УчасткиКвартал42_30_0101003.xlsx'
+        filename = f'N:/Левченко/Анжерка/Книга1.xlsx'
         print(filename)
         getNumberMassiv(filename)

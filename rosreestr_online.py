@@ -14,25 +14,25 @@ def getObjectType(objectId):
     url = f'http://rosreestr.ru/fir_lite_rest/api/gkn/fir_object/{objectId}'
     try:
         r = requests.get(url, headers=headers, verify="CertBundle.pem")
-        objectData = r.json().get("objectData")
-        objectType = objectData.get("objectType")
+        objectDatas = r.json()
+        objectType = objectDatas.get("objectType")
     except:
         # print('Error!!! Нет объекта с таким Id')
         r = 'Error!!! Нет объекта с таким Id'
-    return objectData, objectType
+    return objectDatas, objectType
 def getObjectId(cadNum):
     # официальный API Росреестра для поиска ID
     url = f'https://rosreestr.gov.ru/api/online/fir_objects/{cadNum}'
     # НЕофициальный API Росреестра для поиска ID
     url2 = f'http://rosreestr.ru/fir_lite_rest/api/gkn/fir_objects/{cadNum}'
     try:
-        # r = requests.get(url, headers=headers, verify="CertBundle.pem")
+        r = requests.get(url, headers=headers, verify="CertBundle.pem")
         r2 = requests.get(url2, headers=headers, verify="CertBundle.pem")
-        # objectIds = []
+        objectIds = []
         objectIds2 = []
-        # for el in r.json():
-        #     objectId = el.get("objectId")
-        #     objectIds.append(objectId)
+        for el in r.json():
+            objectId = el.get("objectId")
+            objectIds.append(objectId)
 
         for el2 in r2.json():
             objectId2 = el2.get("objectId")
@@ -41,7 +41,7 @@ def getObjectId(cadNum):
         print('Error!!! Нет объекта с таким кадастровым номером')
     # print("objectId официальные", objectIds)
     # print("objectId2 неофициальный", objectIds2)
-    return objectIds2
+    return objectIds, objectIds2
 
 def normalizationTypeStreet(type_street):
     type_ulicas = ["ул", "улица", "у", ]

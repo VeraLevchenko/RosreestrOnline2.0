@@ -27,7 +27,7 @@ def getNumberMassiv(filename):
     # 002001010000 / Иной объект недвижимости
 
     rezult = []
-    df = pd.read_excel(filename, index_col=0, sheet_name='Sheet1')
+    df = pd.read_excel(filename, index_col=0, sheet_name='Лист1')
              # Сброс ограничений на количество выводимых рядов
     # pd.set_option('display.max_rows', 10)
             # отключаем перенос табл на другую строку
@@ -39,8 +39,7 @@ def getNumberMassiv(filename):
 
     print(df.head(10))
     # len(df.index)
-    k = 2
-    for i in range(0, k):
+    for i in range(0, len(df.index)):
         rez = []
         print(f"{i}из{len(df.index)}")
         cadNumber = str(df.iloc[i]['CadNumbers'])
@@ -61,11 +60,9 @@ def getNumberMassiv(filename):
         else:
             rez.append("Пропускаю")
         rezult.append(rez)
-    blank = [i for i in range(1, 2)]
-    print(blank)
     print(rezult)
-    # df.insert(loc=len(df.columns), column='objectName', value=rezult)
-    # df.to_excel(filename, index=False)
+    df.insert(loc=len(df.columns), column='objectName', value=rezult)
+    df.to_excel(filename)
 
 
     end_time = time.time()  # время окончания выполнения
@@ -74,7 +71,7 @@ def getNumberMassiv(filename):
 
 
 if __name__ == '__main__':
-    # for i in range(511, 512):
-    filename = f'D:/No_cn_in_gar/результат простановки кадастровых/Помещения/sales_combined.xlsx'
-    print(filename)
-    getNumberMassiv(filename)
+    for i in range(186, 192):
+        filename = f'N:/Левченко/Кейс Наполнение ФИАС кадномерами/Из дома No_cn_in_gar21.10.2023/результат простановки кадастровых/Помещения/Massiv2/{i}.xlsx'
+        print(filename)
+        getNumberMassiv(filename)
